@@ -1,6 +1,8 @@
 const router = require("express").Router();
 const axios = require("axios");
 
+const { runtime_2_min } = require("../../utils/utils.js");
+
 router.get("/", async (req, res) => {
   const { q } = req.query;
 
@@ -33,9 +35,9 @@ router.get("/", async (req, res) => {
               title: res.data.title,
               year: res.data.year,
               imbd_id: res.data.id,
-              length: res.data.length,
+              length: runtime_2_min(res.data.length),
               rating_votes: res.data.rating_votes,
-              cast: res.data.cast
+              cast: res.data.cast === undefined ? [] : res.data.cast.map((actor) => actor.actor)
             }
 
             return film;
