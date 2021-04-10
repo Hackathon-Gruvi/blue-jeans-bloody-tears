@@ -2,33 +2,36 @@ const router = require("express").Router();
 var nameToImdb = require("name-to-imdb");
 var imdb = require("imdb");
 
-router.get("/name", async (req, res) => {
+const { runtime_2_min } = require("../../utils/utils.js");
+
+router.get("/", async (req, res) => {
   const { q } = req.query;
 
-  nameToImdb(q, function (err, result, information) {
-    console.log(result);
-    console.log(information);
+  nameToImdb(q, async function (err, result, information) {
+    if (err || result === undefined) {
+      res.status(404).send(err);
+    }
 
-    res.json({
-      id: result,
-      info: information,
+    imdb(result, async function (err, data) {
+      if (err) {
+        console.log(err.stack);
+        return res.status(500).send(err);
+      }
+
+      if (!data) {
+        return res.status(404).send();
+      }
+
+      res.json({
+        imdb_id: result,
+        title: data.title,
+        date: data.year,
+        length: runtime_2_min(data.runtime),
+        genres: data.genre,
+        director: data.director !== "N/A" ? data.director : undefined,
+        writer: data.writer !== "N/A" ? data.writer : undefined,
+      });
     });
-  });
-});
-
-router.get("/info", async (req, res) => {
-  const { id } = req.query;
-
-  imdb(id, function (err, data) {
-    if (err) {
-      console.log(err.stack);
-      res.status(500).send(err.stack);
-    }
-
-    if (data) {
-      console.log(data);
-      res.json(data);
-    }
   });
 });
 
