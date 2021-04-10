@@ -21,6 +21,8 @@ module.exports.getRapidData = async (query) =>
       .request(options)
       .then(function (response) {
         const titles = response.data.titles;
+        if (!titles) resolve([]);
+
         const titleRequests = titles.map((data) => {
           const url = `https://imdb-internet-movie-database-unofficial.p.rapidapi.com/film/${data.id}`;
           return axios.get(url, options);
@@ -31,7 +33,7 @@ module.exports.getRapidData = async (query) =>
             const film = {
               title: res.data.title,
               year: res.data.year,
-              imbd_id: res.data.id,
+              imdb_id: res.data.id,
               length: runtime_2_min(res.data.length),
               rating_votes: res.data.rating_votes,
               cast:
@@ -39,6 +41,19 @@ module.exports.getRapidData = async (query) =>
                   ? []
                   : res.data.cast.map((actor) => actor.actor),
             };
+
+            let factor = 0.596;
+            if (
+              film.title.replaceAll(" ", "").toLowerCase() ===
+              query.replaceAll(" ", "").toLowerCase()
+            )
+              factor *= 1.1;
+            if (film.year.length > 0) factor *= 1.2;
+            if (film.length > 0) factor *= 1.1;
+            if (film.rating_votes.length > 0) factor *= 1.1;
+            if (film.cast.length > 0) factor *= 1.05;
+
+            film.factor = factor;
 
             return film;
           });

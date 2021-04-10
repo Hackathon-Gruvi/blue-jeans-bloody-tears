@@ -48,31 +48,44 @@ module.exports.getTMDBData = async (query) =>
           let movie = result.results[i];
           let info = await getMovieDetails(movie.id);
 
-          let date;
+          let year;
           if (movie.release_date !== undefined)
-            date =
-              movie.release_date.length > 0 ? movie.release_date : undefined;
+            year = movie.release_date.split("-")[0];
 
           let output = {
             title: movie.title,
-            original_title: movie.original_title,
-            date,
+            year,
             language: movie.original_language,
           };
 
+          let factor = 0.596;
+          if (
+            output.title.replaceAll(" ", "").toLowerCase() ===
+            query.replaceAll(" ", "").toLowerCase()
+          )
+            factor *= 1.1;
+          if (output.year.length > 0) factor *= 1.2;
+
           if (info !== undefined && info !== null) {
             output.imdb_id = info.imdb_id;
-            output.length = info.length;
-            output.genres = info.genres;
-            output.companies = info.companies;
+            output.length = info.lenght;
+            output.genres = info.genres || [];
+            output.companies = info.companies || [];
+
+            if (output.length > 0) factor *= 1.1;
+            if (output.genres.length > 0) factor *= 1.1;
+            if (output.companies.lenght > 0) factor *= 1.05;
           }
+
+          output.factor = factor;
 
           matches.push(output);
         }
 
         resolve(matches);
       })
-      .catch(() => {
+      .catch((err) => {
+        console.log("Error: " + err);
         resolve([]);
       });
   });

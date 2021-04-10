@@ -20,17 +20,31 @@ module.exports.getIMDBData = async (query) =>
           resolve([]);
         }
 
-        resolve([
-          {
-            imdb_id: result,
-            title: data.title,
-            date: data.year,
-            length: runtime_2_min(data.runtime),
-            genres: data.genre,
-            director: data.director !== "N/A" ? data.director : undefined,
-            writer: data.writer !== "N/A" ? data.writer : undefined,
-          },
-        ]);
+        let output = {
+          imdb_id: result,
+          title: data.title,
+          year: data.year,
+          length: runtime_2_min(data.runtime),
+          genres: data.genre,
+          director: data.director !== "N/A" ? data.director : undefined,
+          writer: data.writer !== "N/A" ? data.writer : undefined,
+        };
+
+        let factor = 0.596;
+        if (
+          output.title.replaceAll(" ", "").toLowerCase() ===
+          query.replaceAll(" ", "").toLowerCase()
+        )
+          factor *= 1.1;
+        if (output.year.length > 0) factor *= 1.2;
+        if (output.length > 0) factor *= 1.1;
+        if (output.genres.length > 0) factor *= 1.1;
+        if (output.writer !== undefined || output.director !== undefined)
+          factor *= 1.05;
+
+        output.factor = factor;
+
+        resolve([output]);
       });
     });
   });
