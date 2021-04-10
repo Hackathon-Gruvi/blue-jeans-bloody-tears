@@ -20,8 +20,30 @@ router.get("/", async (req, res) => {
   axios
     .request(options)
     .then(function (response) {
-      console.log(response.data);
-      res.json(response.data);
+      const titles = response.data.titles;
+      const titleRequests = titles.map((data) => {
+        const url = `https://imdb-internet-movie-database-unofficial.p.rapidapi.com/film/${data.id}`;
+        return axios.get(url, options);
+      })
+
+      Promise.all(titleRequests)
+        .then((result) => {
+          const output = result.map((res) => {
+            const film = {
+              title: res.data.title,
+              year: res.data.year,
+              imbd_id: res.data.id,
+              length: res.data.length,
+              rating_votes: res.data.rating_votes,
+              cast: res.data.cast
+            }
+
+            return film;
+          });
+
+          console.log(output);
+          res.json(output);
+        })
     })
     .catch(function (error) {
       console.error(error);
