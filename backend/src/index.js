@@ -1,4 +1,3 @@
-
 const express = require("express");
 
 const app = express();
@@ -16,13 +15,6 @@ app.get("/", (req, res) => {
 
 app.use("/api", apiRouter);
 
-const preprocessing = require("./utils/preprocessing")
-
-app.get("/variations", (req, res) => {
-  const { q } = req.query;
-  preprocessing.createVariations(q)
-  res.send("Go to the console");
-});
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
   res.status(404).send();

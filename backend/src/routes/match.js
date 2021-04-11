@@ -3,6 +3,7 @@ const router = require("express").Router();
 const { getTMDBData } = require("./helper/tmdb.js");
 const { getRapidData } = require("./helper/rapid.js");
 const { getIMDBData } = require("./helper/imdb.js");
+const preprocessing = require("../utils/preprocessing");
 
 const aggregateResults = (data, f) => {
   data = data.flat();
@@ -63,8 +64,12 @@ const queryDatabases = (q, f, i) =>
       });
   });
 
-router.post("/", async (req, res) => {
-  const { queries } = req.body;
+router.get("/", async (req, res) => {
+  const query = req.query.q;
+
+  if (!query) res.status(400).send();
+
+  queries = preprocessing.createVariations(query);
 
   let query_calls = queries.map(({ q, f }, index) => {
     if (q && f) return queryDatabases(q, f, index);
@@ -75,6 +80,8 @@ router.post("/", async (req, res) => {
       const output = aggregateResults(data, 1.0);
 
       output.sort((a, b) => b.factor - a.factor);
+
+      console.log(output);
 
       res.json(output);
     })
