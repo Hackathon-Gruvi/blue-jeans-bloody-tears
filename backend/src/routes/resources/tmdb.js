@@ -73,7 +73,7 @@ router.get("/", async (req, res) => {
       res.json(matches);
     })
     .catch((error) => {
-      res.status(500).send(error);
+      res.status(500).end(error);
     });
 });
 

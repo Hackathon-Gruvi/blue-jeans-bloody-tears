@@ -1,0 +1,25 @@
+{
+  "name": "blue-jeans-bloody-tears",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "concurrently \"cd backend && npm run dev\" \"cd frontend && npm run start\"",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Hackathon-Gruvi/blue-jeans-bloody-tears.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Hackathon-Gruvi/blue-jeans-bloody-tears/issues"
+  },
+  "homepage": "https://github.com/Hackathon-Gruvi/blue-jeans-bloody-tears#readme",
+  "dependencies": {
+    "axios": "^0.21.1",
+    "axios-hooks": "^2.6.1",
+    "concurrently": "^6.0.1"
+  }
+}

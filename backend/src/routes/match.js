@@ -67,7 +67,7 @@ const queryDatabases = (q, f, i) =>
 router.get("/", async (req, res) => {
   const query = req.query.q;
 
-  if (!query) res.status(400).send();
+  if (!query) res.status(400).end();
 
   queries = preprocessing.createVariations(query);
 
@@ -81,12 +81,10 @@ router.get("/", async (req, res) => {
 
       output.sort((a, b) => b.factor - a.factor);
 
-      console.log(output);
-
       res.json(output);
     })
     .catch((err) => {
-      res.status(500).send(`Error occured: ${err}`);
+      res.status(500).end(`Error occured: ${err}`);
     });
 });
 

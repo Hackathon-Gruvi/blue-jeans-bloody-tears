@@ -9,17 +9,17 @@ router.get("/", async (req, res) => {
 
   nameToImdb(q, async function (err, result, information) {
     if (err || result === undefined) {
-      res.status(404).send(err);
+      res.status(404).end(err);
     }
 
     imdb(result, async function (err, data) {
       if (err) {
         console.log(err.stack);
-        return res.status(500).send(err);
+        return res.status(500).end(err);
       }
 
       if (!data) {
-        return res.status(404).send();
+        return res.status(404).end();
       }
 
       res.json({

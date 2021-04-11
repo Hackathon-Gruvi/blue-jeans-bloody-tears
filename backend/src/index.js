@@ -17,7 +17,7 @@ app.use("/api", apiRouter);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
-  res.status(404).send();
+  res.status(404).end();
 });
 
 app.listen(5000, () => {
