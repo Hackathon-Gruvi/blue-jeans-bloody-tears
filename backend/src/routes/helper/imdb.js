@@ -22,7 +22,7 @@ module.exports.getIMDBData = async (query) =>
 
         let output = {
           imdb_id: result,
-          title: data.title,
+          title: data.title ? data.title.trim() : "",
           year: data.year,
           length: runtime_2_min(data.runtime),
           genres: data.genre,
@@ -32,11 +32,13 @@ module.exports.getIMDBData = async (query) =>
 
         let factor = 0.596;
         if (
-          output.title.replaceAll(" ", "").toLowerCase() ===
-          query.replaceAll(" ", "").toLowerCase()
+          output.title
+            .replaceAll(" ", "")
+            .toLowerCase()
+            .includes(query.replaceAll(" ", "").toLowerCase())
         )
-          factor *= 1.1;
-        if (output.year.length > 0) factor *= 1.2;
+          factor *= 1.2;
+        if (output.year.length > 0) factor *= 1.1;
         if (output.length > 0) factor *= 1.1;
         if (output.genres.length > 0) factor *= 1.1;
         if (output.writer !== undefined || output.director !== undefined)

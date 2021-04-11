@@ -31,7 +31,7 @@ module.exports.getRapidData = async (query) =>
         return Promise.all(titleRequests).then((result) => {
           const output = result.map((res) => {
             const film = {
-              title: res.data.title,
+              title: res.data.title ? res.data.title.trim() : "",
               year: res.data.year,
               imdb_id: res.data.id,
               length: runtime_2_min(res.data.length),
@@ -44,11 +44,13 @@ module.exports.getRapidData = async (query) =>
 
             let factor = 0.596;
             if (
-              film.title.replaceAll(" ", "").toLowerCase() ===
-              query.replaceAll(" ", "").toLowerCase()
+              film.title
+                .replaceAll(" ", "")
+                .toLowerCase()
+                .includes(query.replaceAll(" ", "").toLowerCase())
             )
-              factor *= 1.1;
-            if (film.year.length > 0) factor *= 1.2;
+              factor *= 1.2;
+            if (film.year.length > 0) factor *= 1.1;
             if (film.length > 0) factor *= 1.1;
             if (film.rating_votes.length > 0) factor *= 1.1;
             if (film.cast.length > 0) factor *= 1.05;

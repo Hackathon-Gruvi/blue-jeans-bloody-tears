@@ -53,18 +53,20 @@ module.exports.getTMDBData = async (query) =>
             year = movie.release_date.split("-")[0];
 
           let output = {
-            title: movie.title,
+            title: movie.title ? movie.title.trim() : "",
             year,
             language: movie.original_language,
           };
 
           let factor = 0.596;
           if (
-            output.title.replaceAll(" ", "").toLowerCase() ===
-            query.replaceAll(" ", "").toLowerCase()
+            output.title
+              .replaceAll(" ", "")
+              .toLowerCase()
+              .includes(query.replaceAll(" ", "").toLowerCase())
           )
-            factor *= 1.1;
-          if (output.year.length > 0) factor *= 1.2;
+            factor *= 1.2;
+          if (output.year.length > 0) factor *= 1.1;
 
           if (info !== undefined && info !== null) {
             output.imdb_id = info.imdb_id;
