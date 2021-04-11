@@ -1,0 +1,31 @@
+.App {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center
+}
+
+.ant-btn-primary, .ant-btn-primary:hover, .ant-btn-primary:focus {
+  background: #ED3833;
+  border-color: #ED3833;
+  font-weight: 800;
+  font-size: medium;
+}
+
+.title {
+  margin: 10% 0 0 0
+}
+
+.input-field {
+  padding: 2.5% 5% 0 5%
+}
+
+.logos {
+  position: absolute;
+  display: flex;
+  bottom: 0;
+  width: 100vw;
+  flex-direction: row;
+  justify-content: space-around;
+  margin-bottom: 2vh
+}
