@@ -1,5 +1,4 @@
-import { Input, Space, Typography } from "antd";
-import ScrolledList from "./ScrolledList";
+import { Input } from "antd";
 import "antd/dist/antd.css";
 import "./App.css";
 import React, { useEffect, useState } from "react";
@@ -58,25 +57,29 @@ function App() {
         onSearch={handleSearch}
       />
       <div className="list-items">
-        {results.map((movie) => {
-          return (
-            <div className="item" key={movie.imdb_id}>
-              <div className="info">
-                <div className="title">
-                  <a
-                    href={`https://www.imdb.com/title/${movie.imdb_id}/`}
-                    target="_blank"
-                    rel="noreferrer"
-                  >
-                    {movie.title}
-                  </a>
+        {query.length > 0 && results.length === 0 && <p>Loading...</p>}
+        {results.length > 0 &&
+          results.map((movie) => {
+            return (
+              <div className="item" key={movie.imdb_id}>
+                <div className="info">
+                  <div className="title">
+                    <a
+                      href={`https://www.imdb.com/title/${movie.imdb_id}/`}
+                      target="_blank"
+                      rel="noreferrer"
+                    >
+                      {movie.title}
+                    </a>
+                  </div>
+                  <div className="year">{movie.year}</div>
                 </div>
-                <div className="year">{movie.year}</div>
+                <div className="factor">{`${(movie.factor * 100).toFixed(
+                  2
+                )}%`}</div>
               </div>
-              <div className="factor">{`${(movie.factor * 100).toFixed(2)}%`}</div>
-            </div>
-          );
-        })}
+            );
+          })}
       </div>
       <div className="logos">
         <img

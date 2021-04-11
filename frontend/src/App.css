@@ -2,22 +2,25 @@
   height: 100vh;
   display: flex;
   flex-direction: column;
-  align-items: center
+  align-items: center;
+  padding: 2%;
 }
 
-.ant-btn-primary, .ant-btn-primary:hover, .ant-btn-primary:focus {
-  background: #ED3833;
-  border-color: #ED3833;
+.ant-btn-primary,
+.ant-btn-primary:hover,
+.ant-btn-primary:focus {
+  background: #ed3833;
+  border-color: #ed3833;
   font-weight: 800;
   font-size: medium;
 }
 
 .title-film {
-  margin: 10px 0 0 0
+  margin: 10px 0 0 0;
 }
 
 .input-field {
-  padding: 2.5% 20% 0 20%
+  padding: 2.5% 20% 0 20%;
 }
 
 .list-items {
@@ -25,8 +28,15 @@
   flex-direction: column;
   max-height: 50vh;
   width: 80vw;
-  overflow: scroll;
+  overflow-y: auto;
   margin: 5%;
+}
+
+.list-items > p {
+  margin: auto;
+  font-size: 20px;
+  font-weight: 300;
+  text-align: center;
 }
 
 .item {
@@ -47,7 +57,7 @@
   align-content: center;
   padding-right: 2.5%;
   padding-left: 5%;
-  font-size: large; 
+  font-size: large;
 }
 
 .logos {
@@ -57,7 +67,7 @@
   width: 100vw;
   flex-direction: row;
   justify-content: space-around;
-  margin-bottom: 2vh
+  margin-bottom: 2vh;
 }
 
 a {

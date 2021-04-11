@@ -81,8 +81,6 @@ router.get("/", async (req, res) => {
 
       output.sort((a, b) => b.factor - a.factor);
 
-      console.log(output.length);
-
       res.json(output);
     })
     .catch((err) => {
