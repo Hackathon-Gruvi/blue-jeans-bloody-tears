@@ -37,57 +37,64 @@ const getMovieDetails = async (id) =>
 
 module.exports.getTMDBData = async (query) =>
   new Promise((resolve, reject) => {
-    moviedb
-      .searchMovie({ query })
-      .then(async (result) => {
-        let matches = [];
+    const d = require("domain").create();
+    d.on("error", (err) => {
+      resolve([]);
+    });
 
-        if (result.results.length === 0) resolve([]);
+    d.run(() => {
+      moviedb
+        .searchMovie({ query })
+        .then(async (result) => {
+          let matches = [];
 
-        for (let i = 0; i < result.results.length; i++) {
-          let movie = result.results[i];
-          let info = await getMovieDetails(movie.id);
+          if (result.results.length === 0) resolve([]);
 
-          let year;
-          if (movie.release_date !== undefined)
-            year = movie.release_date.split("-")[0];
+          for (let i = 0; i < result.results.length; i++) {
+            let movie = result.results[i];
+            let info = await getMovieDetails(movie.id);
 
-          let output = {
-            title: movie.title ? movie.title.trim() : "",
-            year,
-            language: movie.original_language,
-          };
+            let year;
+            if (movie.release_date !== undefined)
+              year = movie.release_date.split("-")[0];
 
-          let factor = 0.596;
-          if (
-            output.title
-              .replaceAll(" ", "")
-              .toLowerCase()
-              .includes(query.replaceAll(" ", "").toLowerCase())
-          )
-            factor *= 1.2;
-          if (output.year.length > 0) factor *= 1.1;
+            let output = {
+              title: movie.title ? movie.title.trim() : "",
+              year,
+              language: movie.original_language,
+            };
 
-          if (info !== undefined && info !== null) {
-            output.imdb_id = info.imdb_id;
-            output.length = info.lenght;
-            output.genres = info.genres || [];
-            output.companies = info.companies || [];
+            let factor = 0.596;
+            if (
+              output.title
+                .replaceAll(" ", "")
+                .toLowerCase()
+                .includes(query.replaceAll(" ", "").toLowerCase())
+            )
+              factor *= 1.2;
+            if (output.year.length > 0) factor *= 1.1;
 
-            if (output.length > 0) factor *= 1.1;
-            if (output.genres.length > 0) factor *= 1.1;
-            if (output.companies.lenght > 0) factor *= 1.05;
+            if (info !== undefined && info !== null) {
+              output.imdb_id = info.imdb_id;
+              output.length = info.lenght;
+              output.genres = info.genres || [];
+              output.companies = info.companies || [];
+
+              if (output.length > 0) factor *= 1.1;
+              if (output.genres.length > 0) factor *= 1.1;
+              if (output.companies.lenght > 0) factor *= 1.05;
+            }
+
+            output.factor = factor;
+
+            matches.push(output);
           }
 
-          output.factor = factor;
-
-          matches.push(output);
-        }
-
-        resolve(matches);
-      })
-      .catch((err) => {
-        console.log("Error: " + err);
-        resolve([]);
-      });
+          resolve(matches);
+        })
+        .catch((err) => {
+          console.log("Error: " + err);
+          resolve([]);
+        });
+    });
   });
