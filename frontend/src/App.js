@@ -4,6 +4,7 @@ import "antd/dist/antd.css";
 import "./App.css";
 import React, { useEffect, useState } from "react";
 import axios from "axios";
+import logo from "./film_catcher_logo.png";
 
 const { Search } = Input;
 
@@ -47,7 +48,7 @@ function App() {
 
   return (
     <div className="App">
-      <img className="title" src="film_catcher_logo.png" alt="logo" />
+      <img className="title-film" src={logo} alt="logo" />
       <Search
         className="input-field"
         placeholder="Let me catch your film!"
@@ -56,11 +57,11 @@ function App() {
         size="large"
         onSearch={handleSearch}
       />
-      <div>
+      <div className="list-items">
         {results.map((movie) => {
           return (
-            <div key={movie.imdb_id}>
-              <div>
+            <div className="item" key={movie.imdb_id}>
+              <div className="info">
                 <div className="title">
                   <a
                     href={`https://www.imdb.com/title/${movie.imdb_id}/`}
@@ -72,7 +73,7 @@ function App() {
                 </div>
                 <div className="year">{movie.year}</div>
               </div>
-              <div>{movie.factor * 100}</div>
+              <div className="factor">{`${(movie.factor * 100).toFixed(2)}%`}</div>
             </div>
           );
         })}
