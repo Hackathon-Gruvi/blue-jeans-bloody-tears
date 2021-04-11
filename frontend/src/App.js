@@ -23,6 +23,7 @@ function App() {
         method: "GET",
         url: `http://localhost:5000/api/match`,
         params: { q: query },
+        headers: { "Access-Control-Allow-Origin": "*" },
       };
 
       axios
