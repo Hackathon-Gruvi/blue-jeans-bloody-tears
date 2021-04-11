@@ -12,12 +12,42 @@
   font-size: medium;
 }
 
-.title {
-  margin: 10% 0 0 0
+.title-film {
+  margin: 10px 0 0 0
 }
 
 .input-field {
-  padding: 2.5% 5% 0 5%
+  padding: 2.5% 20% 0 20%
+}
+
+.list-items {
+  display: flex;
+  flex-direction: column;
+  max-height: 50vh;
+  width: 80vw;
+  overflow: scroll;
+  margin: 5%;
+}
+
+.item {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  padding: 2%;
+}
+
+.item:nth-child(odd) {
+  background-color: #dadada;
+}
+
+.factor {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-content: center;
+  padding-right: 2.5%;
+  padding-left: 5%;
+  font-size: large; 
 }
 
 .logos {
@@ -28,4 +58,17 @@
   flex-direction: row;
   justify-content: space-around;
   margin-bottom: 2vh
+}
+
+a {
+  font-size: 150%;
+  color: black;
+}
+
+a:hover {
+  color: #ed3833;
+}
+
+li {
+  font-size: 100%;
 }
